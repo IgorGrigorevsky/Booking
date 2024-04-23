@@ -1,24 +1,25 @@
 package entity;
 
-public class EntityHotel {
+public class Hotel {
 
     private Long id;
     private String name;
     private String address;
     private String phone;
     private String email;
-    private Long stars_id;
+    //    private Long starsId;
+    private Long starsId;
 
-    public EntityHotel(Long id, String name, String address, String phone, String email, Long stars_id) {
+    public Hotel(Long id, String name, String address, String phone, String email, Long starsId) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
-        this.stars_id = stars_id;
+        this.starsId = starsId;
     }
 
-    public EntityHotel() {
+    public Hotel() {
     }
 
     public Long getId() {
@@ -61,23 +62,21 @@ public class EntityHotel {
         this.email = email;
     }
 
-    public Long getStars_id() {
-        return stars_id;
+    public Long getStarsId() {
+        return starsId;
     }
 
-    public void setStars_id(Long stars_id) {
-        this.stars_id = stars_id;
+    public void setStarsId(Long starsId) {
+        this.starsId = starsId;
     }
 
     @Override
     public String toString() {
-        return "EntityHotel{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", address='" + address + '\'' +
-               ", phone='" + phone + '\'' +
-               ", email='" + email + '\'' +
-               ", stars_id=" + stars_id +
-               '}';
+        return "EntityHotel " + "id = " + id + ", название - " + name +
+               ", адрес - " + address +
+               ", телефон - " + phone  +
+               ", email - " + email +
+               ", stars_id - " + starsId +
+               "}\n";
     }
 }

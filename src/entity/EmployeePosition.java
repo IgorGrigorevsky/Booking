@@ -1,15 +1,15 @@
 package entity;
 
-public class EntityEmployeePosition {
+public class EmployeePosition {
     private Long id;
     private String position;
 
-    public EntityEmployeePosition(Long id, String position) {
+    public EmployeePosition(Long id, String position) {
         this.id = id;
         this.position = position;
     }
 
-    public EntityEmployeePosition() {
+    public EmployeePosition() {
     }
 
     public Long getId() {

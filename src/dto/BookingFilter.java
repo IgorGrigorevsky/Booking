@@ -9,6 +9,6 @@ public record BookingFilter(int limit,
                             Long room_id,
                             Timestamp date_from,
                             Timestamp date_to,
-                            boolean is_approved,
-                            boolean is_paid) {
+                            Boolean is_approved,
+                            Boolean is_paid) {
 }

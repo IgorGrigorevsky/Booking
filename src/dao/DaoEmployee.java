@@ -1,7 +1,7 @@
 package dao;
 
-import dto.RoomFilter;
-import entity.Room;
+import dto.EmployeeFilter;
+import entity.Employee;
 import exception.DaoException;
 import util.ConnectionManager;
 
@@ -16,56 +16,55 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoRoom {
+public class DaoEmployee {
 
     // простой вариант pattern'а Singletone
-    private final static DaoRoom INSTANCE = new DaoRoom();
+    private final static DaoEmployee INSTANCE = new DaoEmployee();
 
-    private DaoRoom() {
+    private DaoEmployee() {
     }
 
     // операция CREATE одной entity (строки) в БД
     private static final String SAVE_SQL = """
-            INSERT INTO room (hotel_id, beds_count, floor, included_breakfast, class_id, price)
-            VALUES (?,?,?,?,?,?)
+            INSERT INTO employee (person_info_id, position_id, hotel_id)
+            VALUES (?,?,?)
             """;
 
-    public Room save(Room room) {
+    public Employee save(Employee employee) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, room.getHotelId());
-            preparedStatement.setInt(2, room.getBedsCount());
-            preparedStatement.setInt(3, room.getFloor());
-            preparedStatement.setBoolean(4, room.getIncludedBreakfast());
-            preparedStatement.setLong(5, room.getClassId());
-            preparedStatement.setInt(6, room.getPrice());
+
+            preparedStatement.setLong(1, employee.getPersonInfoId());
+            preparedStatement.setLong(2, employee.getPositionId());
+            preparedStatement.setLong(3, employee.getHotelId());
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+
             if (generatedKeys.next()) {
-                room.setId(generatedKeys.getLong("id"));
+                employee.setId(generatedKeys.getLong("id"));
             }
         } catch (Exception throwable) {
             throw new DaoException(throwable);
         }
-        return room;
+        return employee;
     }
 
     // строка-константа для поиска всех значений из таблицы
     private static final String FIND_ALL_SQL = """
-            SELECT id, hotel_id, beds_count, floor, included_breakfast, class_id, price
-            FROM room
+            SELECT id, person_info_id, position_id, hotel_id
+            FROM employee
             """;
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
-    public List<Room> findAll() {
+    public List<Employee> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Room> infoEntityList = new ArrayList<>();
+            List<Employee> infoEntityList = new ArrayList<>();
             while (resultSet.next()) {
-                infoEntityList.add(buildEntityRoom(resultSet));
+                infoEntityList.add(buildEntityEmployee(resultSet));
             }
             return infoEntityList;
         } catch (SQLException throwable) {
@@ -77,27 +76,27 @@ public class DaoRoom {
     // для Id - который мы получаем с помощью метода SELECT)
     private static final String FIND_BY_ID_SQL = """
             SELECT *
-            --SELECT (id, hotel_id, beds_count, floor, included_breakfast, class_id, price)
-            FROM room
+            --SELECT (id, person_info_id, position_id, hotel_id)
+            FROM employee
             WHERE id = ?
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
-    public Optional<Room> findById(Long id) {
+    public Optional<Employee> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // создаем объект и сразу же его возвращаем, оборачивая в Optional <>
-            Room room = null;
+            Employee employee = null;
 
             // по id мы можем получить: или одну сущность - тогда мы начнем создавать наш InfoEntity
             // или ни одной - тогда мы возвращаем пустой Optional <>
             if (resultSet.next()) {
-                room = buildEntityRoom(resultSet);
+                employee = buildEntityEmployee(resultSet);
             }
-            return Optional.ofNullable(room);
+            return Optional.ofNullable(employee);
         } catch (SQLException throwable) {
             throw new DaoException(throwable);
         }
@@ -113,7 +112,7 @@ public class DaoRoom {
     // далее, на основании фильтра достраиваем условие WHERE (если там есть какие-то поля) и добавляем
     // LIMIT и OFFSET в конце
     // этот SQL-запрос будем формировать во время выполнения нашего метода .findAll
-    public List<Room> findAllWithFilters(RoomFilter filter) {
+    public List<Employee> findAllWithFilters(EmployeeFilter filter) {
 
         // т.к. разные варианты фильтрации, то создаём коллекцию объектов для фильтрации (наших знаков "?")
         List<Object> parametrList = new ArrayList<>();
@@ -122,32 +121,22 @@ public class DaoRoom {
         List<String> whereSqlList = new ArrayList<>();
 
         // в случае параметров, которые могут быть, а могут и не быть, мы должны их проверить на "not null"
+        if (filter.id() != null) {
+            whereSqlList.add(" id = ? ");
+            parametrList.add(filter.id());
+        }
+        if (filter.person_info_id() != null) {
+            whereSqlList.add(" person_info_id = ? ");
+            parametrList.add(filter.person_info_id());
+        }
+        if (filter.position_id() != null) {
+            whereSqlList.add(" position_id = ? ");
+            parametrList.add(filter.position_id());
+        }
         if (filter.hotel_id() != null) {
             whereSqlList.add(" hotel_id = ? ");
             parametrList.add(filter.hotel_id());
         }
-        if (filter.beds_count() != null) {
-            whereSqlList.add(" beds_count > ? ");
-            parametrList.add(filter.beds_count());
-        }
-        if (filter.floor() != null) {
-            whereSqlList.add(" floor > ? ");
-            parametrList.add(filter.floor());
-        }
-        if (filter.included_breakfast() != null) {
-            whereSqlList.add(" included_breakfast = ? ");
-            parametrList.add(filter.included_breakfast());
-        }
-        if (filter.class_id() != null) {
-            whereSqlList.add(" class_id = ? ");
-            parametrList.add(filter.class_id());
-        }
-
-        if (filter.price() != null) {
-            whereSqlList.add(" price > ? ");
-            parametrList.add(filter.price());
-        }
-
         parametrList.add(filter.limit());
         parametrList.add(filter.offset());
 
@@ -174,9 +163,9 @@ public class DaoRoom {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // создаем результирующий набор объектов
-            List<Room> list = new ArrayList<>();
+            List<Employee> list = new ArrayList<>();
             while (resultSet.next()) {
-                list.add(buildEntityRoom(
+                list.add(buildEntityEmployee(
                         resultSet));
             }
             return list;
@@ -189,26 +178,20 @@ public class DaoRoom {
 
     // операция UPDATE одной entity (строки) из БД
     private static final String UPDATE_SQL = """
-            UPDATE room
-            SET  hotel_id = ?,
-                 beds_count = ?,
-                 floor = ?,
-                 included_breakfast = ?,
-                 class_id = ?,
-                 price = ?
+            UPDATE employee
+            SET  person_info_id = ?,
+                 position_id = ?,
+                 hotel_id = ?
             WHERE id = ?
             """;
 
-    public void update(Room room) {
+    public void update(Employee employee) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setLong(1, room.getHotelId());
-            preparedStatement.setInt(2, room.getBedsCount());
-            preparedStatement.setInt(3, room.getFloor());
-            preparedStatement.setBoolean(4, room.getIncludedBreakfast());
-            preparedStatement.setLong(5, room.getClassId());
-            preparedStatement.setInt(6, room.getPrice());
-            preparedStatement.setLong(7, room.getId());
+            preparedStatement.setLong(1, employee.getPersonInfoId());
+            preparedStatement.setLong(2, employee.getPositionId());
+            preparedStatement.setLong(3, employee.getHotelId());
+            preparedStatement.setLong(4, employee.getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException throwable) {
@@ -218,7 +201,7 @@ public class DaoRoom {
 
     // операция DELETE одной entity (строки) из БД
     private static final String DELETE_SQL = """
-            DELETE FROM room
+            DELETE FROM employee
             WHERE id = ?
             """;
 
@@ -234,19 +217,18 @@ public class DaoRoom {
         }
     }
 
-    // метод для создания сущности EntityRoom
-    private static Room buildEntityRoom(ResultSet resultSet) throws SQLException {
-        return new Room(
+    // метод для создания сущности EntityEmployee
+    private static Employee buildEntityEmployee(ResultSet resultSet) throws SQLException {
+        return new Employee(
                 resultSet.getLong("id"),
-                resultSet.getLong("hotel_id"),
-                resultSet.getInt("beds_count"),
-                resultSet.getInt("floor"),
-                resultSet.getBoolean("included_breakfast"),
-                resultSet.getLong("class_id"),
-                resultSet.getInt("price"));
+                resultSet.getLong("person_info_id"),
+                resultSet.getLong("position_id"),
+                resultSet.getLong("hotel_id")
+        );
     }
 
-    public static DaoRoom getInstance() {
+    public static DaoEmployee getInstance() {
         return INSTANCE;
     }
 }
+

@@ -1,22 +1,22 @@
 package entity;
 
-public class EntityClientRating {
-    private Long id;
+public class ClientRating {
+    private Integer id;
     private Integer rating;
 
-    public EntityClientRating(Long id, Integer rating) {
+    public ClientRating(Integer id, Integer rating) {
         this.id = id;
         this.rating = rating;
     }
 
-    public EntityClientRating() {
+    public ClientRating() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

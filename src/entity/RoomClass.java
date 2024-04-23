@@ -1,16 +1,16 @@
 package entity;
 
-public class EntityRoomClass {
+public class RoomClass {
 
     private Long id;
     private String roomClass;
 
-    public EntityRoomClass(Long id, String roomClass) {
+    public RoomClass(Long id, String roomClass) {
         this.id = id;
         this.roomClass = roomClass;
     }
 
-    public EntityRoomClass() {
+    public RoomClass() {
     }
 
     public Long getId() {

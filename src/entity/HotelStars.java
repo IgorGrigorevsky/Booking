@@ -1,16 +1,16 @@
 package entity;
 
-public class EntityHotelStars {
+public class HotelStars {
 
     private Long id;
     private Integer stars;
 
-    public EntityHotelStars(Long id, Integer stars) {
+    public HotelStars(Long id, Integer stars) {
         this.id = id;
         this.stars = stars;
     }
 
-    public EntityHotelStars() {
+    public HotelStars() {
     }
 
     public Long getId() {
