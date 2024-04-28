@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoClient {
+public class DaoClient implements Dao<Long, Client> {
 
     // простой вариант pattern'а Singletone
     private final static DaoClient INSTANCE = new DaoClient();
@@ -30,7 +30,7 @@ public class DaoClient {
             INSERT INTO client (person_info_id, client_rating_id)
             VALUES (?,?)
             """;
-
+    @Override
     public Client save(Client client) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -57,6 +57,7 @@ public class DaoClient {
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
+    @Override
     public List<Client> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -81,6 +82,7 @@ public class DaoClient {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<Client> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -180,6 +182,7 @@ public class DaoClient {
             WHERE id = ?
             """;
 
+    @Override
     public void update(Client client) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -199,6 +202,7 @@ public class DaoClient {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {

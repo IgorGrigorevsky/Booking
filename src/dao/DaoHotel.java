@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoHotel {
+public class DaoHotel implements Dao<Long, Hotel> {
     // простой вариант pattern'а Singletone
     private final static DaoHotel INSTANCE = new DaoHotel();
 
@@ -34,6 +34,7 @@ public class DaoHotel {
             VALUES (?,?,?,?,?)
             """;
 
+    @Override
     public Hotel save(Hotel hotel) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -64,6 +65,7 @@ public class DaoHotel {
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
+    @Override
     public List<Hotel> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -88,6 +90,7 @@ public class DaoHotel {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<Hotel> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -199,6 +202,7 @@ public class DaoHotel {
                  WHERE id = ?
             """;
 
+    @Override
     public void update(Hotel hotel) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -221,6 +225,7 @@ public class DaoHotel {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {

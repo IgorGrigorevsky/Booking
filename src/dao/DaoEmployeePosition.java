@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoEmployeePosition {
+public class DaoEmployeePosition implements Dao<Long, EmployeePosition> {
 
     // простой вариант pattern'а Singletone
     private final static DaoEmployeePosition INSTANCE = new DaoEmployeePosition();
@@ -30,6 +30,7 @@ public class DaoEmployeePosition {
             VALUES (?)
             """;
 
+    @Override
     public EmployeePosition save(EmployeePosition employeePosition) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -55,6 +56,7 @@ public class DaoEmployeePosition {
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
+    @Override
     public List<EmployeePosition> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -79,6 +81,7 @@ public class DaoEmployeePosition {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<EmployeePosition> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -173,6 +176,7 @@ public class DaoEmployeePosition {
             WHERE id = ?
             """;
 
+    @Override
     public void update(EmployeePosition employeePosition) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -190,6 +194,7 @@ public class DaoEmployeePosition {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {

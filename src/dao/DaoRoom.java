@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoRoom {
+public class DaoRoom implements Dao<Long, Room> {
 
     // простой вариант pattern'а Singletone
     private final static DaoRoom INSTANCE = new DaoRoom();
@@ -30,6 +30,7 @@ public class DaoRoom {
             VALUES (?,?,?,?,?,?)
             """;
 
+    @Override
     public Room save(Room room) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -59,6 +60,7 @@ public class DaoRoom {
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
+    @Override
     public List<Room> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -83,6 +85,7 @@ public class DaoRoom {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<Room> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -199,6 +202,7 @@ public class DaoRoom {
             WHERE id = ?
             """;
 
+    @Override
     public void update(Room room) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -222,6 +226,7 @@ public class DaoRoom {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {

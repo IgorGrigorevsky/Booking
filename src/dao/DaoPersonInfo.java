@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoPersonInfo {
+public class DaoPersonInfo implements Dao<Long, PersonInfo> {
 
     // создаем Singletone
     private static final DaoPersonInfo INSTANCE = new DaoPersonInfo();
@@ -36,6 +36,7 @@ public class DaoPersonInfo {
                         
             """;
 
+    @Override
     public PersonInfo save(PersonInfo personInfo) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -62,6 +63,7 @@ public class DaoPersonInfo {
             FROM person_info
             """;
 
+    @Override
     public List<PersonInfo> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -86,6 +88,7 @@ public class DaoPersonInfo {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<PersonInfo> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -190,6 +193,7 @@ public class DaoPersonInfo {
             WHERE id = ?
             """;
 
+    @Override
     public void update(PersonInfo personInfo) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -210,6 +214,7 @@ public class DaoPersonInfo {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {

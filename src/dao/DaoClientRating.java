@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.joining;
 
 
 // ерунда с типом id - вместо Bigint не ставится
-public class DaoClientRating {
+public class DaoClientRating implements Dao<Integer, ClientRating> {
 
     private final static DaoClientRating INSTANCE = new DaoClientRating();
 
@@ -31,6 +31,7 @@ public class DaoClientRating {
             VALUES (?)
             """;
 
+    @Override
     public ClientRating save(ClientRating clientRating) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -55,6 +56,7 @@ public class DaoClientRating {
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
+    @Override
     public List<ClientRating> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -79,6 +81,7 @@ public class DaoClientRating {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<ClientRating> findById(Integer id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -174,6 +177,7 @@ public class DaoClientRating {
             WHERE id = ?
             """;
 
+    @Override
     public void update(ClientRating clientRating) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -192,6 +196,7 @@ public class DaoClientRating {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Integer id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {

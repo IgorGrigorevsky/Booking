@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoEmployee {
+public class DaoEmployee implements Dao<Long, Employee> {
 
     // простой вариант pattern'а Singletone
     private final static DaoEmployee INSTANCE = new DaoEmployee();
@@ -30,6 +30,7 @@ public class DaoEmployee {
             VALUES (?,?,?)
             """;
 
+    @Override
     public Employee save(Employee employee) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -58,6 +59,7 @@ public class DaoEmployee {
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
+    @Override
     public List<Employee> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -82,6 +84,7 @@ public class DaoEmployee {
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
+    @Override
     public Optional<Employee> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
@@ -185,6 +188,7 @@ public class DaoEmployee {
             WHERE id = ?
             """;
 
+    @Override
     public void update(Employee employee) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
@@ -205,6 +209,7 @@ public class DaoEmployee {
             WHERE id = ?
             """;
 
+    @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
