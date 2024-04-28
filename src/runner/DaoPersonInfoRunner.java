@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoPersonInfo;
-import dto.PersonInfoFilter;
+import dto.personInfo.PersonInfoFilter;
 import entity.PersonInfo;
 
 import java.util.List;

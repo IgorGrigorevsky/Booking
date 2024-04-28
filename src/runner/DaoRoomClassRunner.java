@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoRoomClass;
-import dto.RoomClassFilter;
+import dto.roomClass.RoomClassFilter;
 import entity.RoomClass;
 
 import java.util.List;

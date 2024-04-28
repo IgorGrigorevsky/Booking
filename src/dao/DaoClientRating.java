@@ -1,6 +1,6 @@
 package dao;
 
-import dto.ClientRatingFilter;
+import dto.clientRating.ClientRatingFilter;
 import entity.ClientRating;
 import exception.DaoException;
 import util.ConnectionManager;

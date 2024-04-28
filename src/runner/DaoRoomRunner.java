@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoRoom;
-import dto.RoomFilter;
+import dto.room.RoomFilter;
 import entity.Room;
 
 import java.util.List;
@@ -58,7 +58,6 @@ public class DaoRoomRunner {
         System.out.println(allWithFilters);
     }
 
-    // todo доделать другие update
     private static void updateRoomHotelId(Long id, Long newHotelId) {
         DaoRoom instance = DaoRoom.getInstance();
         Optional<Room> maybeEntity = instance.findById(id);

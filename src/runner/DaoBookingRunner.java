@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoBooking;
-import dto.BookingFilter;
+import dto.booking.BookingFilter;
 import entity.Booking;
 
 import java.sql.Timestamp;

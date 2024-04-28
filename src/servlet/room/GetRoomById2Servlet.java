@@ -1,11 +1,11 @@
 package servlet.room;
 
-import dao.DaoRoom;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.RoomService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 @WebServlet("/getRoomById2")
 public class GetRoomById2Servlet extends HttpServlet {
-    DaoRoom daoRoom = DaoRoom.getInstance();
+    RoomService roomService = RoomService.getINSTANCE();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,7 +28,7 @@ public class GetRoomById2Servlet extends HttpServlet {
         try (PrintWriter writer = response.getWriter()) {
             writer.write("<h1> Комната </h1>");
             writer.write("<ul>");
-            daoRoom.findById(roomId).stream().toList().forEach(room -> writer.write(
+            roomService.findById(roomId).stream().toList().forEach(roomDto -> writer.write(
                     """
                             <li>
                             значение id номера: %d |
@@ -39,8 +39,8 @@ public class GetRoomById2Servlet extends HttpServlet {
                             значение id класса комнаты: %d |
                             цена: %d} </a>
                             </li>
-                               """.formatted(room.getId(), room.getHotelId(), room.getBedsCount(),
-                            room.getFloor(), room.getClassId(), room.getPrice())
+                               """.formatted(roomDto.getId(), roomDto.getHotel_id(), roomDto.getBeds_count(),
+                            roomDto.getFloor(), roomDto.getClass_id(), roomDto.getPrice())
             ));
             writer.write("</ul>");
         }

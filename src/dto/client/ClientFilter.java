@@ -1,4 +1,4 @@
-package dto;
+package dto.client;
 
 public record ClientFilter(int limit,
                            int offset,

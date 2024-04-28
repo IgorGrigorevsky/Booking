@@ -1,4 +1,4 @@
-package dto;
+package dto.hotel;
 
 public record HotelFilter(int limit,
                           int offset,

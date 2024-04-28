@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoClientRating;
-import dto.ClientRatingFilter;
+import dto.clientRating.ClientRatingFilter;
 import entity.ClientRating;
 
 import java.util.List;

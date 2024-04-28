@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoHotel;
-import dto.HotelFilter;
+import dto.hotel.HotelFilter;
 import entity.Hotel;
 
 import java.util.List;

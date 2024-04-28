@@ -1,6 +1,6 @@
 package dao;
 
-import dto.EmployeePositionFilter;
+import dto.employeePosition.EmployeePositionFilter;
 import entity.EmployeePosition;
 import exception.DaoException;
 import util.ConnectionManager;

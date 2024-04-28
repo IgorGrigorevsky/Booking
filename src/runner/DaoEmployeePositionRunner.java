@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoEmployeePosition;
-import dto.EmployeePositionFilter;
+import dto.employeePosition.EmployeePositionFilter;
 import entity.EmployeePosition;
 
 import java.util.List;

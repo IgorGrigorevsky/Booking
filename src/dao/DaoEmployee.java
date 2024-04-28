@@ -1,6 +1,6 @@
 package dao;
 
-import dto.EmployeeFilter;
+import dto.employee.EmployeeFilter;
 import entity.Employee;
 import exception.DaoException;
 import util.ConnectionManager;

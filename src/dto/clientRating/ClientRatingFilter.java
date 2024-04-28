@@ -1,4 +1,4 @@
-package dto;
+package dto.clientRating;
 
 public record ClientRatingFilter(int limit,
                                  int offset,

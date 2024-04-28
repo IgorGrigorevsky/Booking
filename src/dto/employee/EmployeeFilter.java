@@ -1,4 +1,4 @@
-package dto;
+package dto.employee;
 
 public record EmployeeFilter(int limit,
                              int offset,

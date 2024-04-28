@@ -1,4 +1,4 @@
-package dto;
+package dto.personInfo;
 
 public record PersonInfoFilter(int limit,
                                int offset,

@@ -1,6 +1,6 @@
 package dao;
 
-import dto.RoomClassFilter;
+import dto.roomClass.RoomClassFilter;
 import entity.RoomClass;
 import exception.DaoException;
 import util.ConnectionManager;

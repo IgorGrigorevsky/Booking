@@ -1,7 +1,7 @@
 package dao;
 
 
-import dto.ClientFilter;
+import dto.client.ClientFilter;
 import entity.Client;
 import exception.DaoException;
 import util.ConnectionManager;

@@ -1,6 +1,6 @@
 package dao;
 
-import dto.BookingFilter;
+import dto.booking.BookingFilter;
 import entity.Booking;
 import exception.DaoException;
 import util.ConnectionManager;

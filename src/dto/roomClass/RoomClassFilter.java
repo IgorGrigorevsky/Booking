@@ -1,4 +1,4 @@
-package dto;
+package dto.roomClass;
 
 public record RoomClassFilter(int limit,
                               int offset,

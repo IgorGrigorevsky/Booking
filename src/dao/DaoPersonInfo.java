@@ -1,6 +1,6 @@
 package dao;
 
-import dto.PersonInfoFilter;
+import dto.personInfo.PersonInfoFilter;
 import entity.PersonInfo;
 import exception.DaoException;
 import util.ConnectionManager;
@@ -236,15 +236,15 @@ public class DaoPersonInfo implements Dao<Long, PersonInfo> {
                 resultSet.getString("email"));
     }
 
-    public static boolean checkFullName (String fullName) {
+    public static boolean checkFullName(String fullName) {
         return fullName.matches(REGEX_FULL_NAME);
     }
 
-    public static boolean checkPhoneNumber (String phoneNumber) {
+    public static boolean checkPhoneNumber(String phoneNumber) {
         return phoneNumber.matches(REGEX_PHONE_NUMBER);
     }
 
-    public static boolean checkEmail (String email) {
+    public static boolean checkEmail(String email) {
         return email.matches(REGEX_EMAIL);
     }
 

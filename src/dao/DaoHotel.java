@@ -1,6 +1,6 @@
 package dao;
 
-import dto.HotelFilter;
+import dto.hotel.HotelFilter;
 import entity.Hotel;
 import exception.DaoException;
 import util.ConnectionManager;

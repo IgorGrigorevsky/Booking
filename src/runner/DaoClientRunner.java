@@ -1,7 +1,7 @@
 package runner;
 
 import dao.DaoClient;
-import dto.ClientFilter;
+import dto.client.ClientFilter;
 import entity.Client;
 
 import java.util.List;

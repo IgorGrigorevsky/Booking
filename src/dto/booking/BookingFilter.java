@@ -1,4 +1,4 @@
-package dto;
+package dto.booking;
 
 import java.sql.Timestamp;
 
