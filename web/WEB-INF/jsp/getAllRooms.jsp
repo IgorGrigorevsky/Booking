@@ -17,10 +17,10 @@
 <c:forEach var="room" items="${requestScope.roomsList}">
 
     <li>
-            <%--                   ${room.toString()}--%>
         <br> {Номер отеля:
-        <a href="${pageContext.request.contextPath}/getRoomById2?roomId=${room.getId()}"> | значение id
-            отеля: ${room.getId()} |"</a>
+        <a href="${pageContext.request.contextPath}/getRoomById2?roomId=${room.getId()}">
+            <br>  ${room.toString()}
+        </a>
     </li>
 </c:forEach>
 </body>

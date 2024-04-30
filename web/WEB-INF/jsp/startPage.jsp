@@ -11,8 +11,18 @@
     <title>Title</title>
 </head>
 <body>
-Здравствуйте, дорогой гость!
-Если вы не зарегистрированы, пожалуйста
+<span>Здравствуйте, дорогой гость =)!</span>
+<br>
+<br>
+<span>Если вы не зарегистрированы, пожалуйста, пройдите процедуру регистрации</span>
+<br>
 
+<form action="https://yandex.ru">
+    <button type="submit">Вхоод</button>
+</form>
+
+<form action="https://google.ru">
+    <button type="submit">Регистрация</button>
+</form>
 </body>
 </html>
