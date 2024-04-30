@@ -5,21 +5,21 @@
          version="4.0">
 
 
-<!--    // создание сервлета-->
-<!--    <servlet>-->
-<!--        // указываем название, можно использовать любое-->
-<!--        <servlet-name>RoomServlet</servlet-name>-->
-<!--        // указываем путь к нашему сервлету. Этот путь используется в Reflection API-->
-<!--        // когда мы будем загружать наш класс через ClassLoader, мы будем использовать наш className,-->
-<!--        // чтобы на основании конструктора без параметров проинициализировать - создать сущность нашего HttpServlet'а-->
-<!--        <servlet-class>servlet.room.RoomServlet</servlet-class>-->
-<!--    </servlet>-->
+    <!--    // создание сервлета-->
+    <!--    <servlet>-->
+    <!--        // указываем название, можно использовать любое-->
+    <!--        <servlet-name>RoomServlet</servlet-name>-->
+    <!--        // указываем путь к нашему сервлету. Этот путь используется в Reflection API-->
+    <!--        // когда мы будем загружать наш класс через ClassLoader, мы будем использовать наш className,-->
+    <!--        // чтобы на основании конструктора без параметров проинициализировать - создать сущность нашего HttpServlet'а-->
+    <!--        <servlet-class>servlet.room.RoomServlet</servlet-class>-->
+    <!--    </servlet>-->
 
-<!--    // мы должны написать на наш RoomServlet - URL-mapping, т.е. как мы должны указать в нашем path-->
-<!--    // какой-то путь - на который мы замаппим наш класс HttpServlet - т.е. по какому ключу в-->
-<!--    нашей map'е мы получим значение HttpServlet'а-->
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>RoomServlet</servlet-name>-->
-<!--        <url-pattern>/roomServlet</url-pattern>-->
-<!--    </servlet-mapping>-->
+    <!--    // мы должны написать на наш RoomServlet - URL-mapping, т.е. как мы должны указать в нашем path-->
+    <!--    // какой-то путь - на который мы замаппим наш класс HttpServlet - т.е. по какому ключу в-->
+    <!--    нашей map'е мы получим значение HttpServlet'а-->
+    <!--    <servlet-mapping>-->
+    <!--        <servlet-name>RoomServlet</servlet-name>-->
+    <!--        <url-pattern>/roomServlet</url-pattern>-->
+    <!--    </servlet-mapping>-->
 </web-app>
