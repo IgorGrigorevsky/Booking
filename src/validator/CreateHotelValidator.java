@@ -22,29 +22,24 @@ public class CreateHotelValidator implements Validator<CreateHotelDto> {
 
         if (!DaoHotel.checkName(object.getName())) {
             validationResult.add(Error.of("invalid name",
-                    "введен некорректный формат названия\n"
-                    + "пожалуйста, используйте следующий пример: \n \"Метрополис\""));
+                    "введен некорректный формат названия: " + object.getName()
+                    + "пожалуйста, используйте следующий пример без кавычек: \"Метрополис\""));
         }
         if (!DaoHotel.checkAddress(object.getAddress())) {
             validationResult.add(Error.of("invalid address",
-                    """
-                            введен некорректный формат адреса
-                            пожалуйста, используйте следующий пример:\s
-                             г. Москва, ул. Пятницкая, д. 3 (при наличии добавьте - корп. 1"""));
+                    "введен некорректный формат адрема: " + object.getAddress()
+                    + "пожалуйста, используйте следующий пример:\s" +
+                    "г. Москва, ул. Пятницкая, д. 3 (при наличии добавьте - корп. 1"));
         }
         if (!DaoHotel.checkPhone(object.getPhone())) {
             validationResult.add(Error.of("invalid phone",
-                    """
-                            введен некорректный формат номера телефона
-                            пожалуйста, используйте следующий пример:\s
-                             79101234567 или 74953456789"""));
+                    "введен некорректный формат телефона: " + object.getPhone()
+                    + "пожалуйста, используйте следующий пример: 79101234567 или 74953456789"));
         }
         if (!DaoHotel.checkEmail(object.getEmail())) {
             validationResult.add(Error.of("invalid email",
-                    """
-                            введен некорректный формат номера телефона
-                            пожалуйста, используйте следующий пример:\s
-                             java@gmail.com"""));
+                    "введен некорректный формат электронной почты: " + object.getEmail()
+                    + "пожалуйста, используйте следующий пример: java@gmail.com"));
         }
 
         return validationResult;

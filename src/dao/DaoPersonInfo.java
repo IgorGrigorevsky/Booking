@@ -27,7 +27,7 @@ public class DaoPersonInfo implements Dao<Long, PersonInfo> {
 
     private static final String REGEX_FULL_NAME = "[А-Я]{1}[а-я]{1,}\\s[А-Я]{1}[а-я]{1,}";
     private static final String REGEX_PHONE_NUMBER = "8[\\d]{9,12}";
-    private static final String REGEX_EMAIL = "(\\w+)@[a-zA-Z]{2,10}\\.[a-z]{2,6}";
+    private static final String REGEX_EMAIL = "([\\w.]+)@[a-zA-Z]{2,10}\\.[a-z]{2,6}";
 
     // операция CREATE одной entity (строки) в БД
     private static final String SAVE_SQL = """

@@ -1,5 +1,6 @@
 package entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Hotel {
 
     private Long id;
@@ -18,15 +20,6 @@ public class Hotel {
     private String email;
     //    private Long starsId;
     private Long starsId;
-
-    public Hotel(Long id, String name, String address, String phone, String email, Long starsId) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.starsId = starsId;
-    }
 
     @Override
     public String toString() {

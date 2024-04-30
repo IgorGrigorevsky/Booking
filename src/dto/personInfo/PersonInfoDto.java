@@ -10,6 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class PersonInfoDto {
+
     private final Long id;
     private final String full_name;
     private final String phone_number;

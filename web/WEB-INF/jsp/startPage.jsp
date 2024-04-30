@@ -21,7 +21,7 @@
     <button type="submit">Вхоод</button>
 </form>
 
-<form action="https://google.ru">
+<form action="${pageContext.request.contextPath}/createPersonInfo">
     <button type="submit">Регистрация</button>
 </form>
 </body>
