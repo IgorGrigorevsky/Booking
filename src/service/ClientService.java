@@ -3,7 +3,9 @@ package service;
 import dao.DaoClient;
 import dto.client.ClientDto;
 import dto.client.ClientFilter;
+import dto.client.CreateClientDto;
 import entity.Client;
+import mapper.CreateClientMapper;
 
 import java.util.List;
 
@@ -15,12 +17,31 @@ public class ClientService {
     private static final ClientService INSTANCE = new ClientService();
 
     private final DaoClient daoClient = DaoClient.getInstance();
+    private final CreateClientMapper createClientMapper = CreateClientMapper.getINSTANCE();
 
     private ClientService() {
     }
 
     public static ClientService getINSTANCE() {
         return INSTANCE;
+    }
+
+    public Long create(CreateClientDto createClientDto) {
+
+        // 1 шаг: validation отсутствует
+
+        // 2 шаг: map Dto -> Entity
+        Client client = createClientMapper.mapFrom(createClientDto);
+
+        // 3 шаг: hotelDao.save()
+        // после того, как мы преобразовали Dto в Entity, мы можем воспользоваться методом .save()
+        // HotelDao.save() -> для того, чтобы сохранить преобразованную сущность из предыдущего шага
+        Client savedClient = daoClient.save(client);
+
+
+        // 4 шаг: return
+        // возвращаем id, саму сущность или то, что мы возвращаем в методе.
+        return savedClient.getId();
     }
 
     public ClientDto save(Client client) {

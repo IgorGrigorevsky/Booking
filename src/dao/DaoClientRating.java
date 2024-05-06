@@ -16,8 +16,6 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-
-// ерунда с типом id - вместо Bigint не ставится
 public class DaoClientRating implements Dao<Integer, ClientRating> {
 
     private final static DaoClientRating INSTANCE = new DaoClientRating();

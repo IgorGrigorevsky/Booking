@@ -26,7 +26,7 @@ public class DaoPersonInfo implements Dao<Long, PersonInfo> {
     }
 
     private static final String REGEX_FULL_NAME = "[А-Я]{1}[а-я]{1,}\\s[А-Я]{1}[а-я]{1,}";
-    private static final String REGEX_PHONE_NUMBER = "8[\\d]{9,12}";
+    private static final String REGEX_PHONE_NUMBER = "[+78]?[\\d]{9,12}";
     private static final String REGEX_EMAIL = "([\\w.]+)@[a-zA-Z]{2,10}\\.[a-z]{2,6}";
 
     // операция CREATE одной entity (строки) в БД
@@ -99,6 +99,37 @@ public class DaoPersonInfo implements Dao<Long, PersonInfo> {
             PersonInfo personInfo = null;
 
             // по id мы можем получить: или одну сущность - тогда мы начнем создавать наш InfoEntity
+            // или ни одной - тогда мы возвращаем пустой Optional <>
+            if (resultSet.next()) {
+                personInfo = buildEntityPersonInfo(resultSet);
+            }
+            return Optional.ofNullable(personInfo);
+        } catch (SQLException throwable) {
+            throw new DaoException(throwable);
+        }
+    }
+
+    // строка-константа для операции Authentication по почте и паролю из другой таблицы
+    private static final String FIND_BY_PASSWORD_AND_EMAIL = """
+            SELECT *
+            FROM person_info
+            JOIN public.authentication as a on person_info.id = a.person_info_id
+            WHERE password LIKE ?
+              AND email LIKE ?
+            """;
+
+    // так как возвращаемый Entity может быть NULL, мы возвращаем Optional<>
+    public Optional<PersonInfo> findByPasswordAndEmail(String email, String password) {
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_PASSWORD_AND_EMAIL)) {
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // создаем объект и сразу же его возвращаем, оборачивая в Optional <>
+            PersonInfo personInfo = null;
+
+            // по id мы можем получить: или одну сущность
             // или ни одной - тогда мы возвращаем пустой Optional <>
             if (resultSet.next()) {
                 personInfo = buildEntityPersonInfo(resultSet);

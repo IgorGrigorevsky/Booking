@@ -1,20 +1,32 @@
 package servlet.personInfo;
 
+import dto.authentication.CreateAuthenticationDto;
+import dto.client.CreateClientDto;
+import dto.clientRating.CreateClientRatingDto;
 import dto.personInfo.CreatePersonInfoDto;
+import entity.Client;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.AuthenticationService;
+import service.ClientRatingService;
+import service.ClientService;
 import service.PersonInfoService;
 import util.JspHelper;
+import util.UrlPath;
 
 import java.io.IOException;
 
-@WebServlet("/createPersonInfo")
+// регистрация клиента
+@WebServlet(UrlPath.REGISTRATION)
 public class CreatePersonInfoServlet extends HttpServlet {
 
     PersonInfoService personInfoService = PersonInfoService.getINSTANCE();
+    AuthenticationService authenticationService = AuthenticationService.getINSTANCE();
+    ClientRatingService clientRatingService = ClientRatingService.getINSTANCE();
+    ClientService clientService = ClientService.getINSTANCE();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,8 +40,23 @@ public class CreatePersonInfoServlet extends HttpServlet {
                 .phoneNumber(request.getParameter("phoneNumber"))
                 .email(request.getParameter("email"))
                 .build();
+        Long personInfoId = personInfoService.create(buildPersonInfoDto);
 
-        personInfoService.create(buildPersonInfoDto);
-        response.sendRedirect("/startPage");
+        CreateAuthenticationDto buildAuthenticationDto = CreateAuthenticationDto.builder()
+                .personInfoId(personInfoId)
+                .password(request.getParameter("password"))
+                .build();
+        authenticationService.create(buildAuthenticationDto);
+
+        Integer clientRatingId = clientRatingService.create(CreateClientRatingDto.builder()
+                .rating("2")
+                .build());
+
+       clientService.create(CreateClientDto.builder()
+                .personInfoId(String.valueOf(personInfoId))
+                .clientRatingId(String.valueOf(clientRatingId))
+                .build());
+
+        response.sendRedirect("/getAllRooms");
     }
 }

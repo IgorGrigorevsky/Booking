@@ -7,10 +7,12 @@ import dto.personInfo.PersonInfoFilter;
 import entity.PersonInfo;
 import exception.ValidationException;
 import mapper.CreatePersonInfoMapper;
+import mapper.CreatePersonInfoMapperWhenLoggin;
 import validator.CreatePersonInfoValidator;
 import validator.ValidationResult;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -22,6 +24,7 @@ public class PersonInfoService {
     private final CreatePersonInfoValidator createPersonInfoValidator = CreatePersonInfoValidator.getINSTANCE();
     private final DaoPersonInfo daoPersonInfo = DaoPersonInfo.getInstance();
     private final CreatePersonInfoMapper createPersonInfoMapper = CreatePersonInfoMapper.getINSTANCE();
+    private final CreatePersonInfoMapperWhenLoggin createPersonInfoMapperWhenLoggin = CreatePersonInfoMapperWhenLoggin.getINSTANCE();
 
     private PersonInfoService() {
     }
@@ -30,11 +33,11 @@ public class PersonInfoService {
         return INSTANCE;
     }
 
-    public Long create (CreatePersonInfoDto createPersonInfoDto){
+    public Long create(CreatePersonInfoDto createPersonInfoDto) {
 
         // 1 шаг: validation
         ValidationResult validResult = createPersonInfoValidator.isValid(createPersonInfoDto);
-        if (!validResult.isValid()){
+        if (!validResult.isValid()) {
             throw new ValidationException(validResult.getErrors());
         }
 
@@ -83,5 +86,10 @@ public class PersonInfoService {
 
     public boolean delete(Long id) {
         return daoPersonInfo.delete(id);
+    }
+
+    public Optional<PersonInfoDto> login(String email, String password) {
+        return daoPersonInfo.findByPasswordAndEmail(email, password)
+                .map(createPersonInfoMapperWhenLoggin::mapFrom);
     }
 }

@@ -25,7 +25,7 @@ public class DaoHotel implements Dao<Long, Hotel> {
 
     private static final String REGEX_NAME = "[А-яА-я\\-\\s]+";
     private static final String REGEX_ADDRESS = "г\\.\\s[А-Я][а-я]+\\,\\s\\ул\\.\\s[А-Яа-я\\s]+\\,\\sд\\.\\s[\\d]+(\\sкорп\\.\\s[\\d]{1,2})?";
-    private static final String REGEX_PHONE = "7[\\d]{9,12}";
+    private static final String REGEX_PHONE = "[+,7,8]?[\\d]{9,12}";
     private static final String REGEX_EMAIL = "(\\w+)@[a-zA-Z]{2,10}\\.[a-z]{2,6}";
 
     // операция CREATE одной entity (строки) в БД

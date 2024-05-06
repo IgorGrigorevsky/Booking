@@ -17,12 +17,19 @@
 <span>Если вы не зарегистрированы, пожалуйста, пройдите процедуру регистрации</span>
 <br>
 
-<form action="https://yandex.ru">
+<form action="/login">
     <button type="submit">Вхоод</button>
 </form>
 
 <form action="${pageContext.request.contextPath}/createPersonInfo">
     <button type="submit">Регистрация</button>
+</form>
+<br>
+<br>
+<br>
+<span>Для регистрации отеля в системе и сотрудничества с нами -> кнопочка ниже =)</span>
+<form action="${pageContext.request.contextPath}/createHotel">
+    <button type="submit">Регистрация отеля</button>
 </form>
 </body>
 </html>

@@ -12,6 +12,7 @@
     <title>Title</title>
 </head>
 <body>
+<%@ include file="logout.jsp"%>
 <h1> Список комнат </h1>
 
 <c:forEach var="room" items="${requestScope.roomsList}">

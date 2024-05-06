@@ -28,7 +28,7 @@ public class CreateHotelServlet extends HttpServlet {
         CreateHotelDto buildHotelDto = CreateHotelDto.builder()
                 .name(request.getParameter("hotelName"))
                 .address(request.getParameter("address"))
-                .phone(request.getParameter("phone_number"))
+                .phone(request.getParameter("phoneNumber"))
                 .email(request.getParameter("email"))
                 .starsId(request.getParameter("stars"))
                 .build();
