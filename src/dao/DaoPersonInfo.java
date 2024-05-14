@@ -114,8 +114,8 @@ public class DaoPersonInfo implements Dao<Long, PersonInfo> {
             SELECT *
             FROM person_info
             JOIN public.authentication as a on person_info.id = a.person_info_id
-            WHERE password LIKE ?
-              AND email LIKE ?
+            WHERE password = ?
+              AND email = ?
             """;
 
     // так как возвращаемый Entity может быть NULL, мы возвращаем Optional<>

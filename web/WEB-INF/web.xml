@@ -5,7 +5,7 @@
          version="4.0">
 
     <welcome-file-list>
-        <welcome-file>Booking/web/index.html</welcome-file>
+        <welcome-file>/WEB-INF/index.html</welcome-file>
     </welcome-file-list>
 
 
