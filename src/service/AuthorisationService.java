@@ -41,4 +41,8 @@ public class AuthorisationService {
         // возвращаем id, саму сущность или то, что мы возвращаем в методе.
         return savedAuthorisation.getPersonInfoId();
     }
+
+    public boolean deleteUser(Long deletePersonInfoId) {
+        return daoAuthorisation.delete(deletePersonInfoId);
+    }
 }

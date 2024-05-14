@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoAuthentication implements Dao<Integer, Authentication> {
+public class DaoAuthentication implements Dao<Long, Authentication> {
 
     // простой вариант pattern'а Singletone
     private final static DaoAuthentication INSTANCE = new DaoAuthentication();
@@ -26,13 +26,27 @@ public class DaoAuthentication implements Dao<Integer, Authentication> {
     }
 
     @Override
-    public Optional<Authentication> findById(Integer id) {
+    public Optional<Authentication> findById(Long id) {
         return Optional.empty();
     }
 
+
+    // операция DELETE одной entity (строки) из БД
+    private static final String DELETE_SQL = """
+            DELETE FROM authentication
+            WHERE person_info_id = ?
+            """;
     @Override
-    public boolean delete(Integer id) {
-        return false;
+    public boolean delete(Long id) {
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+            preparedStatement.setLong(1, id);
+
+            // если вернется отрицательное число, удалить строку не получилось
+            return preparedStatement.executeUpdate() > 0;
+        } catch (Exception throwable) {
+            throw new DaoException(throwable);
+        }
     }
 
     @Override

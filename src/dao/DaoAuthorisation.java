@@ -43,9 +43,22 @@ public class DaoAuthorisation implements Dao<Long, Authorisation> {
         return Optional.empty();
     }
 
+    // операция DELETE одной entity (строки) из БД
+    private static final String DELETE_SQL = """
+            DELETE FROM authorisation
+            WHERE person_info_id = ?
+            """;
     @Override
     public boolean delete(Long id) {
-        return false;
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+            preparedStatement.setLong(1, id);
+
+            // если вернется отрицательное число, удалить строку не получилось
+            return preparedStatement.executeUpdate() > 0;
+        } catch (Exception throwable) {
+            throw new DaoException(throwable);
+        }
     }
 
     @Override

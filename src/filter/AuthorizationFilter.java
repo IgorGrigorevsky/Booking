@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import static util.UrlPath.CREATE_HOTEL;
-import static util.UrlPath.GET_ROOM_BY_ID_JSTL;
+import static util.UrlPath.DELETE_USER;
 import static util.UrlPath.LOCALE;
 import static util.UrlPath.LOGIN;
 import static util.UrlPath.REGISTRATION;
@@ -23,7 +23,7 @@ import static util.UrlPath.START_PAGE;
 @WebFilter("/*")
 public class AuthorizationFilter implements Filter {
 
-    private static final Set<String> PUBLIC_PATH = Set.of(START_PAGE, LOGIN, REGISTRATION, LOCALE, CREATE_HOTEL);
+    private static final Set<String> PUBLIC_PATH = Set.of(START_PAGE, LOGIN, REGISTRATION, LOCALE, CREATE_HOTEL, DELETE_USER);
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

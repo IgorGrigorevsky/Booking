@@ -19,6 +19,14 @@
     </c:if>
 </div>
 
+<div id="deleteUser">
+    <c:if test="${not empty sessionScope.personInfo}">
+        <form action="/deleteUser" method="post">
+            <button type="submit">Delete page</button>
+        </form>
+    </c:if>
+</div>
+
 <div id="locale">
     <form action="/locale" method="post">
         <button type="submit" name="lang" value="ru_RU">RU</button>
