@@ -1,7 +1,6 @@
 package servlet;
 
 import dto.client.ClientFilter;
-import dto.clientRating.ClientRatingFilter;
 import dto.personInfo.PersonInfoDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,8 +33,8 @@ public class DeleteUser extends HttpServlet {
         PersonInfoDto user = (PersonInfoDto) request.getSession().getAttribute("personInfo");
         Long deletePersonInfoId = user.getId();
         Long deleteClientId = clientService.findAllWithFilters
-                                (new ClientFilter(1, 0, null, deletePersonInfoId, null))
-                        .getLast().getId();
+                        (new ClientFilter(1, 0, null, deletePersonInfoId, null))
+                .getLast().getId();
         Long deleteClientRatingId = clientService.findAllWithFilters
                         (new ClientFilter(1, 0, null, deletePersonInfoId, null))
                 .getLast().getClient_rating_id();

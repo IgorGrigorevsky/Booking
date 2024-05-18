@@ -6,11 +6,11 @@ import exception.DaoException;
 import util.ConnectionManager;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ public class DaoBooking implements Dao<Long, Booking> {
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, booking.getClientId());
             preparedStatement.setLong(2, booking.getRoomId());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(booking.getDateFrom()));
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(booking.getDateTo()));
+            preparedStatement.setDate(3, Date.valueOf(booking.getDateFrom()));
+            preparedStatement.setDate(4, Date.valueOf(booking.getDateTo()));
             preparedStatement.setBoolean(5, booking.getIsApproved());
             preparedStatement.setBoolean(6, booking.getIsPaid());
             preparedStatement.executeUpdate();
@@ -214,8 +214,8 @@ public class DaoBooking implements Dao<Long, Booking> {
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
             preparedStatement.setLong(1, booking.getClientId());
             preparedStatement.setLong(2, booking.getRoomId());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(booking.getDateFrom()));
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(booking.getDateTo()));
+            preparedStatement.setDate(3, Date.valueOf(booking.getDateFrom()));
+            preparedStatement.setDate(4, Date.valueOf(booking.getDateTo()));
             preparedStatement.setBoolean(5, booking.getIsApproved());
             preparedStatement.setBoolean(6, booking.getIsPaid());
             preparedStatement.setLong(7, booking.getId());
@@ -251,8 +251,8 @@ public class DaoBooking implements Dao<Long, Booking> {
                 resultSet.getLong("id"),
                 resultSet.getLong("client_id"),
                 resultSet.getLong("room_id"),
-                resultSet.getTimestamp("date_from").toLocalDateTime(),
-                resultSet.getTimestamp("date_to").toLocalDateTime(),
+                resultSet.getDate("date_from").toLocalDate(),
+                resultSet.getDate("date_to").toLocalDate(),
                 resultSet.getBoolean("is_approved"),
                 resultSet.getBoolean("is_paid"));
     }

@@ -12,7 +12,10 @@ import util.JspHelper;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/createHotel")
+import static util.UrlPath.CREATE_HOTEL;
+import static util.UrlPath.START_PAGE;
+
+@WebServlet(CREATE_HOTEL)
 public class CreateHotelServlet extends HttpServlet {
 
     HotelService hotelService = HotelService.getINSTANCE();
@@ -34,6 +37,6 @@ public class CreateHotelServlet extends HttpServlet {
                 .build();
 
         hotelService.create(buildHotelDto);
-        response.sendRedirect("/startPage");
+        response.sendRedirect(START_PAGE);
     }
 }

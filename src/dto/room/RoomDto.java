@@ -3,10 +3,8 @@ package dto.room;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 @AllArgsConstructor
 @EqualsAndHashCode
 public class RoomDto {
@@ -18,4 +16,16 @@ public class RoomDto {
     private final Boolean included_breakfast;
     private final Long class_id;
     private final Integer price;
+
+    @Override
+    public String toString() {
+        return "Номер комнаты " + id +
+               " | идентификатор отеля: " + hotel_id +
+               " | количество кроватей: " + beds_count +
+               " | этаж: " + floor +
+               " | наличие завтрака: " + included_breakfast +
+               " | класс комнаты: " + class_id +
+               " | цена: " + price +
+               " руб.";
+    }
 }

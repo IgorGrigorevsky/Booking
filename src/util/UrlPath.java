@@ -14,5 +14,6 @@ public class UrlPath {
     public static final String GET_ROOM_BY_ID_JSTL = "/getRoomByIdJSTL";
     public static final String CREATE_BOOKING = "/createBooking";
     public static final String DELETE_USER = "/deleteUser";
+    public static final String GET_ALL_ROOMS = "/getAllRooms";
 
 }

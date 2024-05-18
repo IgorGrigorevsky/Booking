@@ -4,8 +4,7 @@ import dao.DaoBooking;
 import dto.booking.BookingFilter;
 import entity.Booking;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,21 +12,21 @@ public class DaoBookingRunner {
     public static void main(String[] args) {
 
         // CREATE
-        saveBooking(3L, 2L, LocalDateTime.of(2024, 5, 9, 9, 0, 0),
-                LocalDateTime.of(2024, 5, 15, 9, 0, 0), null, null);
+        saveBooking(3L, 2L, LocalDate.of(2024, 5, 9),
+                LocalDate.of(2024, 5, 15), null, null);
 
         // READ
         selectAll();
         selectAllWithFilter(5, 0, null, null, null,
-                LocalDateTime.of(2024, 5, 30, 0, 0, 0),
-                LocalDateTime.of(2024, 6, 30, 0, 0, 0), null, null);
+                LocalDate.of(2024, 5, 30),
+                LocalDate.of(2024, 6, 30), null, null);
 
         // DELETE
         deleteBooking(11L);
 
     }
 
-    private static void saveBooking(Long clientId, Long roomId, LocalDateTime dateFrom, LocalDateTime dateTo, Boolean isApproved, Boolean isPaid) {
+    private static void saveBooking(Long clientId, Long roomId, LocalDate dateFrom, LocalDate dateTo, Boolean isApproved, Boolean isPaid) {
         DaoBooking daoBooking = DaoBooking.getInstance();
         Booking booking = new Booking();
 
@@ -48,9 +47,9 @@ public class DaoBookingRunner {
     }
 
     private static void selectAllWithFilter(Integer limit, int offset, Long id, Long client_id, Long room_id,
-                                            LocalDateTime dateFrom, LocalDateTime dateTo, Boolean is_approved, Boolean is_paid) {
+                                            LocalDate dateFrom, LocalDate dateTo, Boolean is_approved, Boolean is_paid) {
         BookingFilter filter = new BookingFilter(limit, offset, id, client_id, room_id,
-                Timestamp.valueOf(dateFrom), Timestamp.valueOf(dateTo), is_approved, is_paid);
+                dateFrom, dateTo, is_approved, is_paid);
         List<Booking> allWithFilters = DaoBooking.getInstance().findAllWithFilters(filter);
         System.out.println(allWithFilters);
     }
@@ -81,7 +80,7 @@ public class DaoBookingRunner {
         System.out.println("измененный room_id: \n" + maybeEntity);
     }
 
-    private static void updateBookingDateFrom(Long id, LocalDateTime newDateFrom) {
+    private static void updateBookingDateFrom(Long id, LocalDate newDateFrom) {
         DaoBooking instance = DaoBooking.getInstance();
         Optional<Booking> maybeEntity = instance.findById(id);
         System.out.println("имеющийся date_from: \n" + maybeEntity);
@@ -94,7 +93,7 @@ public class DaoBookingRunner {
         System.out.println("измененный date_from: \n" + maybeEntity);
     }
 
-    private static void updateBookingDateTo(Long id, LocalDateTime newDateTo) {
+    private static void updateBookingDateTo(Long id, LocalDate newDateTo) {
         DaoBooking instance = DaoBooking.getInstance();
         Optional<Booking> maybeEntity = instance.findById(id);
         System.out.println("имеющийся date_to: \n" + maybeEntity);

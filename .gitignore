@@ -1,3 +1,9 @@
 /out/
 /Booking.iml
 /.idea/
+/src/test/ContentServlet.java
+/src/test/ContentServlet2.java
+/src/test/CookieServlet.java
+/src/test/DispatcherServlet.java
+/src/test/RegistrationServlet.java
+/src/test/SessionServlet.java

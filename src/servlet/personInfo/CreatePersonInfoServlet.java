@@ -1,16 +1,17 @@
 package servlet.personInfo;
 
 import dto.authentication.CreateAuthenticationDto;
+import dto.authorisation.CreateAuthorisationDto;
 import dto.client.CreateClientDto;
 import dto.clientRating.CreateClientRatingDto;
 import dto.personInfo.CreatePersonInfoDto;
-import entity.Client;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.AuthenticationService;
+import service.AuthorisationService;
 import service.ClientRatingService;
 import service.ClientService;
 import service.PersonInfoService;
@@ -19,12 +20,15 @@ import util.UrlPath;
 
 import java.io.IOException;
 
+import static util.UrlPath.START_PAGE;
+
 // регистрация клиента
 @WebServlet(UrlPath.REGISTRATION)
 public class CreatePersonInfoServlet extends HttpServlet {
 
     PersonInfoService personInfoService = PersonInfoService.getINSTANCE();
     AuthenticationService authenticationService = AuthenticationService.getINSTANCE();
+    AuthorisationService authorisationService = AuthorisationService.getINSTANCE();
     ClientRatingService clientRatingService = ClientRatingService.getINSTANCE();
     ClientService clientService = ClientService.getINSTANCE();
 
@@ -52,11 +56,17 @@ public class CreatePersonInfoServlet extends HttpServlet {
                 .rating("2")
                 .build());
 
-       clientService.create(CreateClientDto.builder()
+        clientService.create(CreateClientDto.builder()
                 .personInfoId(String.valueOf(personInfoId))
                 .clientRatingId(String.valueOf(clientRatingId))
                 .build());
 
-        response.sendRedirect("/getAllRooms");
+        authorisationService.create(CreateAuthorisationDto.builder()
+                .personInfoId(personInfoId)
+                .roleId("клиент")
+                .isClient(true)
+                .build());
+
+        response.sendRedirect(START_PAGE);
     }
 }

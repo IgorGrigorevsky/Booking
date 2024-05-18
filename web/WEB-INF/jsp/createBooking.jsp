@@ -20,14 +20,19 @@
 
 
 <form action="${pageContext.request.contextPath}/createBooking" method="post">
+
     <label for="dateFromId"> <fmt:message key="page.login.dateFrom"/>:
-        <input type="text" name="dateFrom" id="dateFromId" required>
+        <input type="date" name="dateFrom" id="dateFromId" required>
     </label>
     <br>
     <label for="dateToId"> <fmt:message key="page.login.dateTo"/>:
-        <input type="text" name="dateTo" id="dateToId" required>
+        <input type="date" name="dateTo" id="dateToId" required>
     </label>
-    <button type="Submit"><fmt:message key="page.login.submit.button"/></button>
+
+    <label for="roomId">
+        <input type="hidden" id="roomId" name="roomId" value="${requestScope.roomId}">
+        <button type="Submit"><fmt:message key="page.login.submit.button"/></button>
+    </label>
 </form>
 </body>
 </html>

@@ -7,7 +7,6 @@ import dto.booking.CreateBookingDto;
 import entity.Booking;
 import mapper.CreateBookingMapper;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -26,9 +25,6 @@ public class BookingService {
     public static BookingService getINSTANCE() {
         return INSTANCE;
     }
-
-
-
 
     public Long create(CreateBookingDto createBookingDto) {
 
@@ -53,30 +49,30 @@ public class BookingService {
 
     public BookingDto save(Booking booking) {
         Booking savedBooking = daoBooking.save(booking);
-        return new BookingDto(savedBooking.getId(), savedBooking.getClientId(), savedBooking.getRoomId(), Timestamp.valueOf(savedBooking.getDateFrom()),
-                Timestamp.valueOf(savedBooking.getDateTo()), savedBooking.getIsApproved(), savedBooking.getIsPaid());
+        return new BookingDto(savedBooking.getId(), savedBooking.getClientId(), savedBooking.getRoomId(), savedBooking.getDateFrom(),
+                savedBooking.getDateTo(), savedBooking.getIsApproved(), savedBooking.getIsPaid());
     }
 
     public List<BookingDto> findAll() {
 
         // получив на выходе List -> мы преобразовываем объекты Booking в BookingDto
         return daoBooking.findAll().stream()
-                .map(booking -> new BookingDto(booking.getId(), booking.getClientId(), booking.getRoomId(), Timestamp.valueOf(booking.getDateFrom()),
-                        Timestamp.valueOf(booking.getDateTo()), booking.getIsApproved(), booking.getIsPaid()
+                .map(booking -> new BookingDto(booking.getId(), booking.getClientId(), booking.getRoomId(), booking.getDateFrom(),
+                        booking.getDateTo(), booking.getIsApproved(), booking.getIsPaid()
                 )).collect(toList());
     }
 
     public List<BookingDto> findById(Long id) {
         return daoBooking.findById(id).stream()
-                .map(booking -> new BookingDto(booking.getId(), booking.getClientId(), booking.getRoomId(), Timestamp.valueOf(booking.getDateFrom()),
-                        Timestamp.valueOf(booking.getDateTo()), booking.getIsApproved(), booking.getIsPaid()
+                .map(booking -> new BookingDto(booking.getId(), booking.getClientId(), booking.getRoomId(), booking.getDateFrom(),
+                        booking.getDateTo(), booking.getIsApproved(), booking.getIsPaid()
                 )).collect(toList());
     }
 
     public List<BookingDto> findAllWithFilters(BookingFilter filter) {
         return daoBooking.findAllWithFilters(filter).stream()
-                .map(booking -> new BookingDto(booking.getId(), booking.getClientId(), booking.getRoomId(), Timestamp.valueOf(booking.getDateFrom()),
-                        Timestamp.valueOf(booking.getDateTo()), booking.getIsApproved(), booking.getIsPaid()
+                .map(booking -> new BookingDto(booking.getId(), booking.getClientId(), booking.getRoomId(), booking.getDateFrom(),
+                        booking.getDateTo(), booking.getIsApproved(), booking.getIsPaid()
                 )).collect(toList());
     }
 

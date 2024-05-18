@@ -11,28 +11,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--берем из сессии sessionScope нашего пользователя - если не равно null, то отображаем форму--%>
-<div id="logout">
-    <c:if test="${not empty sessionScope.personInfo}">
-        <form action="/logout" method="post">
-            <button type="submit">Logout</button>
+<div>
+    <div id="logout">
+        <c:if test="${not empty sessionScope.personInfo}">
+            <form action="/logout" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </c:if>
+    </div>
+
+    <div id="deleteUser">
+        <c:if test="${not empty sessionScope.personInfo}">
+            <form action="/deleteUser" method="post">
+                <button type="submit">Delete account</button>
+            </form>
+        </c:if>
+    </div>
+
+    <div id="locale">
+        <form action="/locale" method="post">
+            <button type="submit" name="lang" value="ru_RU">RU</button>
+            <button type="submit" name="lang" value="en_US">EN</button>
         </form>
-    </c:if>
-</div>
+    </div>
 
-<div id="deleteUser">
-    <c:if test="${not empty sessionScope.personInfo}">
-        <form action="/deleteUser" method="post">
-            <button type="submit">Delete page</button>
-        </form>
-    </c:if>
+    <fmt:setLocale
+            value="${sessionScope.lang != null ? sessionScope.lang : (param.lang != null ? param.lang : 'en_US')}"/>
+    <fmt:setBundle basename="translation"/>
 </div>
-
-<div id="locale">
-    <form action="/locale" method="post">
-        <button type="submit" name="lang" value="ru_RU">RU</button>
-        <button type="submit" name="lang" value="en_US">EN</button>
-    </form>
-</div>
-
-<fmt:setLocale value="${sessionScope.lang != null ? sessionScope.lang : (param.lang != null ? param.lang : 'en_US')}"/>
-<fmt:setBundle basename="translation"/>

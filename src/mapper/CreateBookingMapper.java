@@ -3,7 +3,7 @@ package mapper;
 import dto.booking.CreateBookingDto;
 import entity.Booking;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class CreateBookingMapper implements Mapper<CreateBookingDto, Booking> {
 
@@ -21,12 +21,12 @@ public class CreateBookingMapper implements Mapper<CreateBookingDto, Booking> {
     @Override
     public Booking mapFrom(CreateBookingDto object) {
         return Booking.builder()
-                .clientId(Long.valueOf(object.getClient_id()))
-                .roomId(Long.valueOf(object.getRoom_id()))
-                .dateFrom(LocalDateTime.parse(object.getDate_from()))
-                .dateTo(LocalDateTime.parse(object.getDate_to()))
-                .isApproved(Boolean.valueOf(object.getIs_approved()))
-                .isPaid(Boolean.valueOf(object.getIs_paid()))
+                .clientId(Long.valueOf(object.getClientId()))
+                .roomId(Long.valueOf(object.getRoomId()))
+                .dateFrom(LocalDate.parse(object.getDateFrom()))
+                .dateTo(LocalDate.parse(object.getDateTo()))
+                .isApproved(Boolean.valueOf(object.getIsApproved()))
+                .isPaid(Boolean.valueOf(object.getIsPaid()))
                 .build();
     }
 }

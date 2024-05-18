@@ -1,14 +1,14 @@
 package dto.booking;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public record BookingFilter(int limit,
                             int offset,
                             Long id,
                             Long client_id,
                             Long room_id,
-                            Timestamp date_from,
-                            Timestamp date_to,
+                            LocalDate date_from,
+                            LocalDate date_to,
                             Boolean is_approved,
                             Boolean is_paid) {
 }
