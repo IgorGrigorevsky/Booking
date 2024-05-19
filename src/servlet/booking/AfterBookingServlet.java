@@ -8,9 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static util.UrlPath.AFTER_BOOKING;
 import static util.UrlPath.GET_ALL_ROOMS;
 
-@WebServlet("/afterBooking")
+@WebServlet(AFTER_BOOKING)
 public class AfterBookingServlet extends HttpServlet {
 
     @Override

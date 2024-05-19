@@ -79,4 +79,17 @@ public class BookingService {
     public boolean delete(Long id) {
         return daoBooking.delete(id);
     }
+
+    public void confirm(Long id) {
+        Booking booking = daoBooking.findById(id).stream().toList().getFirst();
+        daoBooking.update(Booking.builder()
+                .id(booking.getId())
+                .clientId(booking.getClientId())
+                .roomId(booking.getRoomId())
+                .dateFrom(booking.getDateFrom())
+                .dateTo(booking.getDateTo())
+                .isApproved(Boolean.valueOf("true"))
+                .isPaid(Boolean.valueOf("true"))
+                .build());
+    }
 }

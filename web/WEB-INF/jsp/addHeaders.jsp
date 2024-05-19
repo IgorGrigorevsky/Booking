@@ -20,10 +20,26 @@
         </c:if>
     </div>
 
+    <div id="needBook">
+        <c:if test="${not empty sessionScope.isClient}">
+            <form action="/needToBook" method="get">
+                <button type="submit">Need to book</button>
+            </form>
+        </c:if>
+    </div>
+
     <div id="deleteUser">
-        <c:if test="${not empty sessionScope.personInfo}">
+        <c:if test="${not empty sessionScope.personInfo && empty sessionScope.isClient}">
             <form action="/deleteUser" method="post">
                 <button type="submit">Delete account</button>
+            </form>
+        </c:if>
+    </div>
+
+    <div id="createHotel">
+        <c:if test="${not empty sessionScope.personInfo && not empty sessionScope.isClient}">
+            <form action="/createHotel" method="get">
+                <button type="submit">Create hotel</button>
             </form>
         </c:if>
     </div>

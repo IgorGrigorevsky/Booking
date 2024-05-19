@@ -28,13 +28,13 @@ public class Booking {
     @Override
     public String toString() {
         return "EntityBooking{" +
-               "id=" + id +
-               ", client_id=" + clientId +
-               ", room_id=" + roomId +
-               ", date_from=" + dateFrom +
-               ", date_to=" + dateTo +
-               ", is_approved=" + isApproved +
-               ", is_paid=" + isPaid +
+               "идентификатор бронирования " + id +
+               ", идентификатор клиента " + clientId +
+               ", идентификатор комнаты " + roomId +
+               ", дата заезда " + dateFrom +
+               ", дата выезда " + dateTo +
+               ", статус подтверждения " + isApproved +
+               ", статус оплаты " + isPaid +
                '}';
     }
 }

@@ -13,7 +13,9 @@ import util.JspHelper;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/getAllRooms2")
+import static util.UrlPath.GET_ALL_ROOMS2;
+
+@WebServlet(GET_ALL_ROOMS2)
 public class GetAllRooms2Servlet extends HttpServlet {
     RoomService roomService = RoomService.getINSTANCE();
 

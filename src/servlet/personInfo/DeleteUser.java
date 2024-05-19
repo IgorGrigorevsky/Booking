@@ -1,4 +1,4 @@
-package servlet;
+package servlet.personInfo;
 
 import dto.client.ClientFilter;
 import dto.personInfo.PersonInfoDto;

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static util.UrlPath.CREATE_HOTEL;
-import static util.UrlPath.START_PAGE;
+import static util.UrlPath.GET_ALL_ROOMS;
 
 @WebServlet(CREATE_HOTEL)
 public class CreateHotelServlet extends HttpServlet {
@@ -37,6 +37,6 @@ public class CreateHotelServlet extends HttpServlet {
                 .build();
 
         hotelService.create(buildHotelDto);
-        response.sendRedirect(START_PAGE);
+        response.sendRedirect(GET_ALL_ROOMS);
     }
 }

@@ -1,4 +1,4 @@
-package servlet;
+package servlet.personInfo;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +9,9 @@ import util.UrlPath;
 
 import java.io.IOException;
 
-@WebServlet("/logout")
+import static util.UrlPath.LOGOUT;
+
+@WebServlet(LOGOUT)
 public class Logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

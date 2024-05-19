@@ -5,6 +5,8 @@ import dto.authorisation.CreateAuthorisationDto;
 import entity.Authorisation;
 import mapper.CreateAuthorisationMapper;
 
+import java.util.List;
+
 public class AuthorisationService {
 
 
@@ -40,6 +42,13 @@ public class AuthorisationService {
         // 4 шаг: return
         // возвращаем id, саму сущность или то, что мы возвращаем в методе.
         return savedAuthorisation.getPersonInfoId();
+    }
+
+    public List<CreateAuthorisationDto> isClient(Long id) {
+        return daoAuthorisation.findById(id).stream()
+                .map(authorisation -> new CreateAuthorisationDto(authorisation.getPersonInfoId(),
+                        authorisation.getRoleId(), authorisation.getIsClient()))
+                .toList();
     }
 
     public boolean deleteUser(Long deletePersonInfoId) {

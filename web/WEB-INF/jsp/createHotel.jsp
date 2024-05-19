@@ -23,7 +23,7 @@
         <%--используем атрибут for для ассоциации с помощью id - это необязательно, но желательно --->
         т.е в for мы ссылаемся на id нашего input'а--%>
         <label for="nameId">Название отеля:
-            <input type="text" name="hotelName" id="nameId">
+            <input type="text" name="hotelName" id="nameId" required>
         </label>
             <span>Укажите название отеля, например: Метрополис</span>
         <br>
@@ -32,7 +32,7 @@
     <div>
         <br>
         <label for="addressId">Адрес отеля:
-            <input type="text" name="address" id="addressId">
+            <input type="text" name="address" id="addressId" required>
         </label>
         <br>
         <span>Укажите адрес отеля</span>
@@ -44,7 +44,7 @@
     <div>
         <br>
         <label for="emailId">Email:
-            <input type="text" name="email" id="emailId">
+            <input type="text" name="email" id="emailId" required>
         </label>
         <br>
         <span>Укажите электронную почту, например: java@gmail.com</span>
@@ -54,7 +54,7 @@
     <div>
         <br>
         <label for="phoneNumberId">Телефонный номер:
-            <input type="text" name="phoneNumber" id="phoneNumberId">
+            <input type="text" name="phoneNumber" id="phoneNumberId" required>
         </label>
         <br>
         <span>Укажите телефонный номер, например: 79101234567 или 74953456789</span>
@@ -66,7 +66,7 @@
     т.е. берется role от тега <select>, а value - из option'а, который мы выбрали в выпадающем списке--%>
     <span>Укажите количество звезд отеля от 1 до 5</span>
     <br>
-    <select name="stars" id="starsId">
+    <select name="stars" id="starsId" required>
         <c:forEach var="star" items="${requestScope.stars}">
             <option value="${star}">${star} </option>
         </c:forEach>

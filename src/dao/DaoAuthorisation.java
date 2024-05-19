@@ -6,6 +6,8 @@ import util.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +40,39 @@ public class DaoAuthorisation implements Dao<Long, Authorisation> {
         return null;
     }
 
+    private static final String FIND_BY_ID_SQL = """
+            Select *
+            FROM authorisation
+            WHERE person_info_id = ?
+            """;
+
     @Override
     public Optional<Authorisation> findById(Long id) {
-        return Optional.empty();
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // создаем объект и сразу же его возвращаем, оборачивая в Optional <>
+            Authorisation authorisation = null;
+
+            // по id мы можем получить: или одну сущность - тогда мы начнем создавать наш InfoEntity
+            // или ни одной - тогда мы возвращаем пустой Optional <>
+            if (resultSet.next()) {
+                authorisation = buildEntityAuthorisation(resultSet);
+            }
+            return Optional.ofNullable(authorisation);
+        } catch (SQLException throwable) {
+            throw new DaoException(throwable);
+        }
+    }
+
+    // метод для создания сущности EntityRoom
+    private static Authorisation buildEntityAuthorisation(ResultSet resultSet) throws SQLException {
+        return new Authorisation(
+                resultSet.getLong("person_info_id"),
+                resultSet.getString("role_id"),
+                resultSet.getBoolean("is_client"));
     }
 
     // операция DELETE одной entity (строки) из БД
@@ -48,6 +80,7 @@ public class DaoAuthorisation implements Dao<Long, Authorisation> {
             DELETE FROM authorisation
             WHERE person_info_id = ?
             """;
+
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionManager.get();

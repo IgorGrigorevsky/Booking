@@ -1,22 +1,27 @@
-package servlet;
+package servlet.personInfo;
 
+import dto.authorisation.CreateAuthorisationDto;
 import dto.personInfo.PersonInfoDto;
+import entity.Authentication;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
+import service.AuthorisationService;
 import service.PersonInfoService;
 import util.JspHelper;
 import util.UrlPath;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(UrlPath.LOGIN)
 public class Login extends HttpServlet {
 
     PersonInfoService personInfoService = PersonInfoService.getINSTANCE();
+    AuthorisationService authorisationService = AuthorisationService.getINSTANCE();
 
     // для возвращения JSP страницы - "логин"
     @Override
@@ -50,6 +55,10 @@ public class Login extends HttpServlet {
     private void onLogginSuccess(PersonInfoDto personInfoDto, HttpServletRequest request, HttpServletResponse response) {
 
         request.getSession().setAttribute("personInfo", personInfoDto);
+        Boolean isClient = authorisationService.isClient(personInfoDto.getId()).getFirst().getIsClient();
+        if (!isClient) {
+            request.getSession().setAttribute("isClient", isClient);
+        }
         response.sendRedirect("/getAllRooms");
     }
 

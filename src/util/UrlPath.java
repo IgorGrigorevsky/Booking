@@ -15,5 +15,10 @@ public class UrlPath {
     public static final String CREATE_BOOKING = "/createBooking";
     public static final String DELETE_USER = "/deleteUser";
     public static final String GET_ALL_ROOMS = "/getAllRooms";
+    public static final String GET_ALL_ROOMS2 = "/getAllRooms2";
+    public static final String NEED_TO_BOOK = "/needToBook";
+    public static final String AFTER_BOOKING = "/afterBooking";
+    public static final String CONFIRM_BOOKING = "/confirmBooking";
+    public static final String LOGOUT = "/logout";
 
 }
