@@ -14,6 +14,7 @@ import java.util.List;
 
 import static util.UrlPath.CREATE_HOTEL;
 import static util.UrlPath.GET_ALL_ROOMS;
+import static util.UrlPath.START_PAGE;
 
 @WebServlet(CREATE_HOTEL)
 public class CreateHotelServlet extends HttpServlet {
@@ -37,6 +38,10 @@ public class CreateHotelServlet extends HttpServlet {
                 .build();
 
         hotelService.create(buildHotelDto);
-        response.sendRedirect(GET_ALL_ROOMS);
+        if (request.getSession().getAttribute("isClient") != null) {
+            response.sendRedirect(GET_ALL_ROOMS);
+        } else {
+            response.sendRedirect(START_PAGE);
+        }
     }
 }

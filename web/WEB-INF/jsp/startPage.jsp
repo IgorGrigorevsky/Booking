@@ -12,25 +12,31 @@
     <title>Title</title>
 </head>
 <body>
-<span>Здравствуйте, дорогой гость =)!</span>
+<%--<span>Здравствуйте, дорогой гость =)!</span>--%>
+<span><fmt:message key="page.login.message1"/></span>
 <br>
 <br>
-<span>Если вы не зарегистрированы, пожалуйста, пройдите процедуру регистрации</span>
+<%--<span>Если вы не зарегистрированы, пожалуйста, пройдите процедуру регистрации</span>--%>
+<span><fmt:message key="page.login.message2"/></span>
 <br>
 
 <form action="/login">
-    <button type="submit">Вхоод</button>
+<%--    <button type="submit">Вхоод</button>--%>
+    <button type="submit"><fmt:message key="page.login.enter.button"/></button>
 </form>
 
 <form action="${pageContext.request.contextPath}/createPersonInfo">
-    <button type="submit">Регистрация</button>
+<%--    <button type="submit">Регистрация</button>--%>
+    <button type="submit"><fmt:message key="page.login.register.button"/></button>
 </form>
 <br>
 <br>
 <br>
-<span>Для регистрации отеля в системе и сотрудничества с нами -> кнопочка ниже =)</span>
+<%--<span>Для регистрации отеля в системе и сотрудничества с нами -> кнопочка ниже =)</span>--%>
+<span><fmt:message key="page.login.message3"/></span>
 <form action="${pageContext.request.contextPath}/createHotel">
-    <button type="submit">Регистрация отеля</button>
+<%--    <button type="submit">Регистрация отеля</button>--%>
+    <button type="submit"><fmt:message key="page.login.register.hotel.button"/></button>
 </form>
 </body>
 </html>

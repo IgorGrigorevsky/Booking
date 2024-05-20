@@ -21,7 +21,7 @@
 
     <li>
         <br> {Бронирование:
-        <button onclick="window.location.href = '/confirmBooking?id=${book.getId()}'">Confirm booking</button>
+        <button onclick="window.location.href = '/confirmBooking?id=${book.getId()}'"><fmt:message key="page.logout.confirm.booking"/></button>
         <br> ${book.toString()}
         </a>
         <br>
