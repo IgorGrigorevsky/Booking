@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/index.html</welcome-file>
+    </welcome-file-list>
+
+
+    <!--    // создание сервлета-->
+    <!--    <servlet>-->
+    <!--        // указываем название, можно использовать любое-->
+    <!--        <servlet-name>RoomServlet</servlet-name>-->
+    <!--        // указываем путь к нашему сервлету. Этот путь используется в Reflection API-->
+    <!--        // когда мы будем загружать наш класс через ClassLoader, мы будем использовать наш className,-->
+    <!--        // чтобы на основании конструктора без параметров проинициализировать - создать сущность нашего HttpServlet'а-->
+    <!--        <servlet-class>servlet.room.RoomServlet</servlet-class>-->
+    <!--    </servlet>-->
+
+    <!--    // мы должны написать на наш RoomServlet - URL-mapping, т.е. как мы должны указать в нашем path-->
+    <!--    // какой-то путь - на который мы замаппим наш класс HttpServlet - т.е. по какому ключу в-->
+    <!--    нашей map'е мы получим значение HttpServlet'а-->
+    <!--    <servlet-mapping>-->
+    <!--        <servlet-name>RoomServlet</servlet-name>-->
+    <!--        <url-pattern>/roomServlet</url-pattern>-->
+    <!--    </servlet-mapping>-->
+</web-app>

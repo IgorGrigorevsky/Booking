@@ -1,7 +1,7 @@
 package dao;
 
-import dto.room.RoomFilter;
-import entity.Room;
+import dto.hotel.HotelFilter;
+import entity.Hotel;
 import exception.DaoException;
 import util.ConnectionManager;
 
@@ -16,58 +16,63 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
-public class DaoRoom implements Dao<Long, Room> {
-
+public class DaoHotel implements Dao<Long, Hotel> {
     // простой вариант pattern'а Singletone
-    private final static DaoRoom INSTANCE = new DaoRoom();
+    private final static DaoHotel INSTANCE = new DaoHotel();
 
-    private DaoRoom() {
+    private DaoHotel() {
     }
+
+    private static final String REGEX_NAME = "[А-яА-я\\-\\s]+";
+    private static final String REGEX_ADDRESS = "г\\.\\s[А-Я][а-я]+\\,\\s\\ул\\.\\s[А-Яа-я\\s]+\\,\\sд\\.\\s[\\d]+(\\sкорп\\.\\s[\\d]{1,2})?";
+    private static final String REGEX_PHONE = "[+,7,8]?[\\d]{9,12}";
+    private static final String REGEX_EMAIL = "(\\w+)@[a-zA-Z]{2,10}\\.[a-z]{2,6}";
 
     // операция CREATE одной entity (строки) в БД
     private static final String SAVE_SQL = """
-            INSERT INTO room (hotel_id, beds_count, floor, included_breakfast, class_id, price)
-            VALUES (?,?,?,?,?,?)
+            INSERT INTO hotel (name, address, phone, email, stars_id)
+            VALUES (?,?,?,?,?)
             """;
 
     @Override
-    public Room save(Room room) {
+    public Hotel save(Hotel hotel) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, room.getHotelId());
-            preparedStatement.setInt(2, room.getBedsCount());
-            preparedStatement.setInt(3, room.getFloor());
-            preparedStatement.setBoolean(4, room.getIncludedBreakfast());
-            preparedStatement.setLong(5, room.getClassId());
-            preparedStatement.setInt(6, room.getPrice());
+
+            preparedStatement.setString(1, hotel.getName());
+            preparedStatement.setString(2, hotel.getAddress());
+            preparedStatement.setString(3, hotel.getPhone());
+            preparedStatement.setString(4, hotel.getEmail());
+            preparedStatement.setLong(5, hotel.getStarsId());
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+
             if (generatedKeys.next()) {
-                room.setId(generatedKeys.getLong("id"));
+                hotel.setId(generatedKeys.getLong("id"));
             }
         } catch (Exception throwable) {
             throw new DaoException(throwable);
         }
-        return room;
+        return hotel;
     }
 
     // строка-константа для поиска всех значений из таблицы
     private static final String FIND_ALL_SQL = """
-            SELECT id, hotel_id, beds_count, floor, included_breakfast, class_id, price
-            FROM room
+            SELECT id, name, address, phone, email, stars_id
+            FROM hotel
             """;
 
     // метод будет возвращать все значения таблицы (список всех Entity)
     // обычно такой метод используется только для справочных таблиц
     @Override
-    public List<Room> findAll() {
+    public List<Hotel> findAll() {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Room> infoEntityList = new ArrayList<>();
+            List<Hotel> infoEntityList = new ArrayList<>();
             while (resultSet.next()) {
-                infoEntityList.add(buildEntityRoom(resultSet));
+                infoEntityList.add(buildEntityHotel(resultSet));
             }
             return infoEntityList;
         } catch (SQLException throwable) {
@@ -79,28 +84,28 @@ public class DaoRoom implements Dao<Long, Room> {
     // для Id - который мы получаем с помощью метода SELECT)
     private static final String FIND_BY_ID_SQL = """
             SELECT *
-            --SELECT (id, hotel_id, beds_count, floor, included_breakfast, class_id, price)
-            FROM room
+            --SELECT (id, name, address, phone, email, stars_id)
+            FROM hotel
             WHERE id = ?
             """;
 
     // так как возвращаемый EntityRoom может быть NULL, мы возвращаем Optional<>
     @Override
-    public Optional<Room> findById(Long id) {
+    public Optional<Hotel> findById(Long id) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // создаем объект и сразу же его возвращаем, оборачивая в Optional <>
-            Room room = null;
+            Hotel hotel = null;
 
             // по id мы можем получить: или одну сущность - тогда мы начнем создавать наш InfoEntity
             // или ни одной - тогда мы возвращаем пустой Optional <>
             if (resultSet.next()) {
-                room = buildEntityRoom(resultSet);
+                hotel = buildEntityHotel(resultSet);
             }
-            return Optional.ofNullable(room);
+            return Optional.ofNullable(hotel);
         } catch (SQLException throwable) {
             throw new DaoException(throwable);
         }
@@ -116,7 +121,7 @@ public class DaoRoom implements Dao<Long, Room> {
     // далее, на основании фильтра достраиваем условие WHERE (если там есть какие-то поля) и добавляем
     // LIMIT и OFFSET в конце
     // этот SQL-запрос будем формировать во время выполнения нашего метода .findAll
-    public List<Room> findAllWithFilters(RoomFilter filter) {
+    public List<Hotel> findAllWithFilters(HotelFilter filter) {
 
         // т.к. разные варианты фильтрации, то создаём коллекцию объектов для фильтрации (наших знаков "?")
         List<Object> parametrList = new ArrayList<>();
@@ -125,32 +130,30 @@ public class DaoRoom implements Dao<Long, Room> {
         List<String> whereSqlList = new ArrayList<>();
 
         // в случае параметров, которые могут быть, а могут и не быть, мы должны их проверить на "not null"
-        if (filter.hotel_id() != null) {
-            whereSqlList.add(" hotel_id = ? ");
-            parametrList.add(filter.hotel_id());
+        if (filter.id() != null) {
+            whereSqlList.add(" id = ? ");
+            parametrList.add(filter.id());
         }
-        if (filter.beds_count() != null) {
-            whereSqlList.add(" beds_count > ? ");
-            parametrList.add(filter.beds_count());
+        if (filter.name() != null) {
+            whereSqlList.add(" name ILIKE ? ");
+            parametrList.add("%" + filter.name() + "%");
         }
-        if (filter.floor() != null) {
-            whereSqlList.add(" floor > ? ");
-            parametrList.add(filter.floor());
+        if (filter.address() != null) {
+            whereSqlList.add("ILIKE");
+            parametrList.add("%" + filter.address() + "%");
         }
-        if (filter.included_breakfast() != null) {
-            whereSqlList.add(" included_breakfast = ? ");
-            parametrList.add(filter.included_breakfast());
+        if (filter.phone() != null) {
+            whereSqlList.add(" phone ILIKE ? ");
+            parametrList.add("%" + filter.phone() + "%");
         }
-        if (filter.class_id() != null) {
-            whereSqlList.add(" class_id = ? ");
-            parametrList.add(filter.class_id());
+        if (filter.email() != null) {
+            whereSqlList.add(" email ILIKE ? ");
+            parametrList.add("%" + filter.email() + "%");
         }
-
-        if (filter.price() != null) {
-            whereSqlList.add(" price > ? ");
-            parametrList.add(filter.price());
+        if (filter.stars_id() != null) {
+            whereSqlList.add(" stars_id > ? ");
+            parametrList.add(filter.stars_id());
         }
-
         parametrList.add(filter.limit());
         parametrList.add(filter.offset());
 
@@ -177,42 +180,38 @@ public class DaoRoom implements Dao<Long, Room> {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // создаем результирующий набор объектов
-            List<Room> list = new ArrayList<>();
+            List<Hotel> list = new ArrayList<>();
             while (resultSet.next()) {
-                list.add(buildEntityRoom(
+                list.add(buildEntityHotel(
                         resultSet));
             }
             return list;
-        } catch (
-                SQLException
-                        throwable) {
+        } catch (SQLException throwable) {
             throw new DaoException(throwable);
         }
     }
 
     // операция UPDATE одной entity (строки) из БД
     private static final String UPDATE_SQL = """
-            UPDATE room
-            SET  hotel_id = ?,
-                 beds_count = ?,
-                 floor = ?,
-                 included_breakfast = ?,
-                 class_id = ?,
-                 price = ?
-            WHERE id = ?
+            UPDATE hotel
+            SET  name = ?,
+                 address = ?,
+                 phone = ?,
+                 email = ?,
+                 stars_id = ?
+                 WHERE id = ?
             """;
 
     @Override
-    public void update(Room room) {
+    public void update(Hotel hotel) {
         try (Connection connection = ConnectionManager.get();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setLong(1, room.getHotelId());
-            preparedStatement.setInt(2, room.getBedsCount());
-            preparedStatement.setInt(3, room.getFloor());
-            preparedStatement.setBoolean(4, room.getIncludedBreakfast());
-            preparedStatement.setLong(5, room.getClassId());
-            preparedStatement.setInt(6, room.getPrice());
-            preparedStatement.setLong(7, room.getId());
+            preparedStatement.setString(1, hotel.getName());
+            preparedStatement.setString(2, hotel.getAddress());
+            preparedStatement.setString(3, hotel.getPhone());
+            preparedStatement.setString(4, hotel.getEmail());
+            preparedStatement.setLong(5, hotel.getStarsId());
+            preparedStatement.setLong(6, hotel.getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException throwable) {
@@ -222,7 +221,7 @@ public class DaoRoom implements Dao<Long, Room> {
 
     // операция DELETE одной entity (строки) из БД
     private static final String DELETE_SQL = """
-            DELETE FROM room
+            DELETE FROM hotel
             WHERE id = ?
             """;
 
@@ -239,19 +238,35 @@ public class DaoRoom implements Dao<Long, Room> {
         }
     }
 
-    // метод для создания сущности EntityRoom
-    private static Room buildEntityRoom(ResultSet resultSet) throws SQLException {
-        return new Room(
+    // метод для создания сущности EntityEmployee
+    private static Hotel buildEntityHotel(ResultSet resultSet) throws SQLException {
+        return new Hotel(
                 resultSet.getLong("id"),
-                resultSet.getLong("hotel_id"),
-                resultSet.getInt("beds_count"),
-                resultSet.getInt("floor"),
-                resultSet.getBoolean("included_breakfast"),
-                resultSet.getLong("class_id"),
-                resultSet.getInt("price"));
+                resultSet.getString("name"),
+                resultSet.getString("address"),
+                resultSet.getString("phone"),
+                resultSet.getString("email"),
+                resultSet.getLong("stars_id")
+        );
     }
 
-    public static DaoRoom getInstance() {
+    public static boolean checkName(String name) {
+        return name.matches(REGEX_NAME);
+    }
+
+    public static boolean checkAddress(String newAddress) {
+        return newAddress.matches(REGEX_ADDRESS);
+    }
+
+    public static boolean checkPhone(String phone) {
+        return phone.matches(REGEX_PHONE);
+    }
+
+    public static boolean checkEmail(String email) {
+        return email.matches(REGEX_EMAIL);
+    }
+
+    public static DaoHotel getInstance() {
         return INSTANCE;
     }
 }
